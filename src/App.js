@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import apiKey from './config';
 
@@ -16,6 +16,7 @@ const App = () => {
   const [searchedImages, setSearchedImages] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -29,7 +30,7 @@ const App = () => {
     if (piano.length === 0) {
       handleSearch('piano');
     };
-  }, [searchQuery]);
+  }, []);
 
   const handleSearch = (query) => {
     axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
@@ -51,7 +52,11 @@ const App = () => {
   };
 
   const handleChangeQuery = (searchText) => {
+    setLoading(true);
     setSearchQuery(searchText);
+    handleSearch(searchText);
+    const path = `/search/${searchText}`;
+    navigate(path);
   };
 
 
