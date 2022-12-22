@@ -7,6 +7,7 @@ import apiKey from './config';
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav';
 import PhotoContainer from './components/PhotoContainer';
+import PageNotFound from './components/PageNotFound';
 
 const App = () => {
 
@@ -71,6 +72,7 @@ const App = () => {
           <Route path='/drums' element={<PhotoContainer images={drums} query={'Drums'} loading={loading} />} />
           <Route path='/piano' element={<PhotoContainer images={piano} query={'Piano'} loading={loading} />} />
           <Route path='/search/:query' element={<PhotoContainer images={searchedImages} query={searchQuery} loading={loading} />} />
+          <Route path='*' element={<PageNotFound />} />
         </Routes>
       </div>
     </>
