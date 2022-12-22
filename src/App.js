@@ -4,6 +4,7 @@ import apiKey from './config';
 
 // COMPONENTS
 import SearchForm from './components/SearchForm';
+import Nav from './components/Nav';
 import PhotoContainer from './components/PhotoContainer';
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
   return (
     <>
       <SearchForm handleSearch={handleChangeQuery} />
+      <Nav />
       <div className='container'>
         {
           (loading)
