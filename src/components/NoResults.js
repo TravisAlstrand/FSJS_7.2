@@ -1,8 +1,7 @@
 const NoResults = () => {
   return (
     <>
-      <h3>Sorry!</h3>
-      <p>We found no results for that search!</p>
+      <h2>We found no results from that search.</h2>
     </>
   );
 };
