@@ -1,7 +1,24 @@
+import { useEffect } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+
 import Photo from './Photo';
 import NoResults from './NoResults';
 
-const PhotoContainer = ({ images, query, loading }) => {
+const PhotoContainer = ({ images, query, loading, handleFetch }) => {
+
+  // IN CASE USE ROUTES TO /SEARCH/... WITHOUT THE SEARCH BAR
+  const params = useParams();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.includes('/search/')) {
+      const currentQuery = (params.query);
+      if (currentQuery !== query) {
+        handleFetch(currentQuery);
+      };
+    };
+  })
+
 
   let photos;
   // IF IMAGES ARRAY IS NOT EMPTY

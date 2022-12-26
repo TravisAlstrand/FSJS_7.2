@@ -1,12 +1,15 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchForm = ({ handleSearch }) => {
 
+  const navigate = useNavigate();
   const searchBar = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleSearch(searchBar.current.value);
+    const path = `search/${searchBar.current.value}`;
+    navigate(path);
   };
 
   return (

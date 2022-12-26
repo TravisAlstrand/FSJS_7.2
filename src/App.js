@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import apiKey from './config';
 
@@ -17,23 +17,22 @@ const App = () => {
   const [searchedImages, setSearchedImages] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
     // CHECK IF NAV STATES ARE EMPTY
-    if (guitar.length === 0) {
-      handleSearch('guitar');
-    };
     if (drums.length === 0) {
-      handleSearch('drums');
+      handleFetch('drums');
     };
     if (piano.length === 0) {
-      handleSearch('piano');
+      handleFetch('piano');
     };
+    if (guitar.length === 0) {
+      handleFetch('guitar');
+    }; // eslint-disable-next-line
   }, []);
 
-  const handleSearch = (query) => {
+  const handleFetch = (query) => {
     axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => {
         if (query === 'guitar') {
@@ -50,20 +49,12 @@ const App = () => {
       .catch(err => {
         console.log('error fetching data', err);
       });
+    setSearchQuery(query);
   };
-
-  const handleChangeQuery = (searchText) => {
-    setLoading(true);
-    setSearchQuery(searchText);
-    handleSearch(searchText);
-    const path = `/search/${searchText}`;
-    navigate(path);
-  };
-
 
   return (
     <>
-      <SearchForm handleSearch={handleChangeQuery} />
+      <SearchForm />
       <Nav />
       <div className='container'>
         <Routes>
@@ -71,7 +62,8 @@ const App = () => {
           <Route path='/guitar' element={<PhotoContainer images={guitar} query={'Guitar'} loading={loading} />} />
           <Route path='/drums' element={<PhotoContainer images={drums} query={'Drums'} loading={loading} />} />
           <Route path='/piano' element={<PhotoContainer images={piano} query={'Piano'} loading={loading} />} />
-          <Route path='/search/:query' element={<PhotoContainer images={searchedImages} query={searchQuery} loading={loading} />} />
+          <Route path='/search/:query' element={<PhotoContainer images={searchedImages} query={searchQuery}
+            handleFetch={handleFetch} loading={loading} />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </div>
